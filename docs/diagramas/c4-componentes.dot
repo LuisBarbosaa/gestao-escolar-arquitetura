@@ -1,0 +1,32 @@
+digraph G {
+  graph [rankdir=TB, fontname="Helvetica", nodesep=0.55, ranksep=0.85, bgcolor="white", pad=0.3, label="C4 - Nível 3: Componentes (módulos) da API e suas dependências", labelloc=t, fontsize=16];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, margin="0.2,0.12", fillcolor="#DCE9F7", color="#1168BD"];
+  edge [fontname="Helvetica", fontsize=9];
+  comp [label="Raiz de composição\n(aplicacao.py)\ncria e injeta dependências", fillcolor="#FFF4D6", color="#B8860B"];
+  auth [label="Autenticação\nusuários, senhas, tokens"];
+  cad [label="Cadastro\nalunos e responsáveis"];
+  aca [label="Acadêmico\nturmas e matrículas"];
+  ava [label="Avaliação\nnotas, frequência,\nregra de aprovação"];
+  fin [label="Financeiro\nmensalidades e pagamentos"];
+  com [label="Comunicação\navisos aos responsáveis"];
+  rel [label="Relatórios\nboletim (somente leitura)"];
+  core [label="Núcleo compartilhado\neventos, erros, perfis, HTTP", fillcolor="#EEEEEE", color="#777777"];
+  {rank=same; auth; cad;}
+  {rank=same; ava; fin;}
+  {rank=same; com; rel;}
+  aca -> cad [label="ConsultaDeAlunos", color="#1168BD", penwidth=1.6];
+  ava -> aca [label="ConsultaAcademica", color="#1168BD", penwidth=1.6];
+  rel -> cad [label="ConsultaDeAlunos", color="#1168BD", penwidth=1.6];
+  rel -> aca [label="ConsultaAcademica", color="#1168BD", penwidth=1.6];
+  rel -> ava [label="ConsultaDeDesempenho", color="#1168BD", penwidth=1.6];
+  com -> cad [label="ConsultaDeAlunos", color="#1168BD", penwidth=1.6];
+  aca -> fin [label="evento\nMatriculaConfirmada/Cancelada", style=dashed, color="#C0392B", dir=forward];
+  aca -> com [label="evento\nMatriculaConfirmada", style=dashed, color="#C0392B"];
+  fin -> com [label="evento\nCarneGerado", style=dashed, color="#C0392B"];
+  comp -> auth [style=dotted, color="#B8860B", arrowhead=none];
+  auth -> core [style=dotted, color="#999999", label="ValidadorDeToken\n(injetado no roteador)"];
+  legenda [shape=plaintext, fillcolor=white, label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2">
+    <TR><TD ALIGN="LEFT"><FONT COLOR="#1168BD"><B>───▶</B></FONT> chamada síncrona por interface (contrato)</TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT COLOR="#C0392B"><B>- - -▶</B></FONT> evento de domínio (publicador ▶ assinante)</TD></TR>
+    <TR><TD ALIGN="LEFT">Todos os módulos usam o núcleo compartilhado</TD></TR></TABLE>>];
+}

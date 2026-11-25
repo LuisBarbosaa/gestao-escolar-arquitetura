@@ -1,0 +1,24 @@
+sequenceDiagram
+    autonumber
+    actor S as Secretaria
+    participant R as Roteador HTTP
+    participant A as Acadêmico
+    participant C as Cadastro
+    participant B as Barramento de eventos
+    participant F as Financeiro
+    participant M as Comunicação
+    S->>R: POST /turmas/{id}/matriculas
+    R->>A: matricular(MatricularAluno)
+    A->>C: obter_aluno(aluno_id)
+    C-->>A: AlunoResumo
+    A->>A: Turma.matricular() (vaga, duplicidade)
+    A->>B: publicar(MatriculaConfirmada)
+    A-->>R: matricula_id
+    R-->>S: 201 Created
+    Note over B,M: processamento assíncrono, depois da resposta
+    B->>F: ao_confirmar_matricula()
+    F->>B: publicar(CarneGerado)
+    B->>M: ao_confirmar_matricula()
+    B->>M: ao_gerar_carne()
+    M->>C: obter_aluno(aluno_id)
+    M-->>M: enviar e-mail ao responsável

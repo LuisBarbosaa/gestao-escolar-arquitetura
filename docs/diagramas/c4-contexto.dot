@@ -1,0 +1,16 @@
+digraph G {
+  graph [rankdir=TB, fontname="Helvetica", nodesep=0.6, ranksep=0.8, bgcolor="white", pad=0.3, label="C4 - Nível 1: Diagrama de Contexto", labelloc=t, fontsize=16];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, fontcolor=white, margin="0.25,0.15"];
+  edge [fontname="Helvetica", fontsize=9, color="#555555"];
+  sec [label="Secretaria\n[Pessoa]\nCadastra alunos, turmas\ne matrículas", fillcolor="#08427B"];
+  prof [label="Professor\n[Pessoa]\nLança notas\ne frequência", fillcolor="#08427B"];
+  resp [label="Responsável\n[Pessoa]\nConsulta boletim e\nrecebe avisos", fillcolor="#08427B"];
+  adm [label="Administrador\n[Pessoa]\nGerencia usuários\ne parâmetros", fillcolor="#08427B"];
+  sis [label="Sistema de Gestão Escolar\n[Sistema de software]\nCadastro, matrícula, avaliação,\nfinanceiro, comunicação e relatórios", fillcolor="#1168BD", width=3.2, height=1.2];
+  email [label="Serviço de E-mail / SMS\n[Sistema externo]", fillcolor="#8C8496"];
+  banco [label="Banco / Gateway de pagamento\n[Sistema externo - evolução]", fillcolor="#8C8496"];
+  {rank=same; sec; prof; resp; adm;}
+  sec -> sis [label="usa"]; prof -> sis [label="usa"]; resp -> sis [label="consulta"]; adm -> sis [label="administra"];
+  sis -> email [label="envia avisos"];
+  sis -> banco [label="emite boletos\n(futuro)", style=dashed];
+}

@@ -1,0 +1,15 @@
+digraph G {
+  graph [rankdir=TB, fontname="Helvetica", bgcolor="white", pad=0.3, nodesep=0.5, ranksep=0.5, label="Estrutura interna de um módulo (ex.: Acadêmico)", labelloc=t, fontsize=15];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, margin="0.2,0.1"];
+  edge [color="#555555"];
+  subgraph cluster_m { label="escola/modulos/academico"; style="rounded"; color="#1168BD"; fontname="Helvetica";
+    contratos [label="contratos.py  (PÚBLICO)\nDTOs, comandos, eventos,\ninterface ConsultaAcademica", fillcolor="#FFE8B0"];
+    rotas [label="rotas.py\nadaptador de entrada HTTP", fillcolor="#DCE9F7"];
+    servico [label="servico.py\ncasos de uso\n(matricular, cancelar...)", fillcolor="#DCE9F7"];
+    dominio [label="dominio.py\nTurma, Matricula,\nStatusMatricula (interno)", fillcolor="#C9F0D0"];
+    repo [label="repositorio.py\nporta + adaptador\nde persistência", fillcolor="#DCE9F7"];
+  }
+  outros [label="Outros módulos", shape=box, style="rounded,dashed", fillcolor=white];
+  rotas -> servico; servico -> dominio; servico -> repo; repo -> dominio; servico -> contratos; rotas -> contratos;
+  outros -> contratos [label=" só podem\n importar isto", fontsize=9, fontname="Helvetica", color="#C0392B"];
+}

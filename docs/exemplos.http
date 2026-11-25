@@ -1,0 +1,43 @@
+### Login
+POST http://localhost:8000/auth/login
+Content-Type: application/json
+
+{"login": "admin", "senha": "admin123"}
+
+### Cadastrar aluno (use o token retornado no login)
+POST http://localhost:8000/alunos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nome": "Ana Beatriz Souza", "data_nascimento": "2012-03-15",
+ "nome_responsavel": "Carla Souza", "email_responsavel": "carla.souza@email.com"}
+
+### Criar turma
+POST http://localhost:8000/turmas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nome": "8º Ano A", "ano_letivo": 2027, "vagas": 30,
+ "disciplinas": [{"codigo": "MAT", "nome": "Matemática", "carga_horaria": 160}]}
+
+### Matricular
+POST http://localhost:8000/turmas/{{turma_id}}/matriculas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"aluno_id": "{{aluno_id}}"}
+
+### Lançar nota
+POST http://localhost:8000/avaliacoes/notas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"aluno_id": "{{aluno_id}}", "turma_id": "{{turma_id}}", "disciplina_codigo": "MAT", "bimestre": 1, "valor": 8.5}
+
+### Mensalidades do aluno
+GET http://localhost:8000/financeiro/alunos/{{aluno_id}}/mensalidades
+Authorization: Bearer {{token}}
+
+### Boletim
+GET http://localhost:8000/relatorios/boletim/{{aluno_id}}?turma={{turma_id}}
+Authorization: Bearer {{token}}

@@ -1,0 +1,15 @@
+digraph G {
+  graph [rankdir=LR, fontname="Helvetica", nodesep=0.5, ranksep=0.9, bgcolor="white", pad=0.3, label="C4 - Nível 2: Diagrama de Contêineres", labelloc=t, fontsize=16];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, fontcolor=white, margin="0.25,0.15"];
+  edge [fontname="Helvetica", fontsize=9, color="#555555"];
+  user [label="Usuários\n(secretaria, professor,\nresponsável, admin)", fillcolor="#08427B"];
+  subgraph cluster_s { label="Sistema de Gestão Escolar"; style="dashed"; color="#1168BD"; fontname="Helvetica"; fontcolor="#1168BD";
+    web [label="Front-end Web\n[SPA - evolução]", fillcolor="#438DD5"];
+    api [label="API da Escola\n[Python - monólito modular]\nTodos os módulos de negócio\nnum único processo", fillcolor="#1168BD", width=2.8];
+    db [label="Banco de dados\n[SQLite / PostgreSQL]\nTabelas separadas\npor módulo", shape=cylinder, fillcolor="#2E6DA4"];
+    bus [label="Barramento de eventos\n[em memória -> fila]\nEventos de domínio", shape=box, fillcolor="#2E6DA4"];
+  }
+  email [label="Serviço de E-mail\n[externo]", fillcolor="#8C8496"];
+  user -> web [label="HTTPS"]; web -> api [label="JSON/REST\n+ token"];
+  api -> db [label="SQL"]; api -> bus [label="publica /\nassina"]; api -> email [label="SMTP/API"];
+}
